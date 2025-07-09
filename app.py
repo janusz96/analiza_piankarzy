@@ -502,5 +502,5 @@ st.dataframe(tabela_obserwacji.style.apply(styluj_obserwacje, axis=None))
 ### METODA 3
 st.subheader("Analiza na podstawie pliku 110.101.120 WYDAJNOSC PRACOWNIKOW")
 st.write("Zakres dat: 1 maja 2024 roku do 8 lipca 2025 roku")
-analizy.metoda3_plik_wydajnosc(st.secrets(["sciezki"]["p06_cennik"]), st.secrets(["sciezki"]["p06_czas_pracy"]))
-analizy.metoda3_plik_wydajnosc(st.secrets(["sciezki"]["p02_cennik"]), st.secrets(["sciezki"]["p02_czas_pracy"]))
+analizy.metoda3_plik_wydajnosc(st.secrets["sciezki"]["p06_cennik"], st.secrets["sciezki"]["p06_czas_pracy"])
+analizy.metoda3_plik_wydajnosc(st.secrets["sciezki"]["p02_cennik"], st.secrets["sciezki"]["p02_czas_pracy"])
