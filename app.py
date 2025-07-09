@@ -19,8 +19,16 @@ st.title("📊 Analiza czasu pracy piankarzy")
 funkcje_pomocnicze.sprawdz_haslo()
 
 ### ŁADOWANIE DANYCH ŹRÓDŁOWYCH
-df_org = pd.read_excel("czasy_wszystko_do_2025.06.30_piankowanie.xls")
-df_cennik = pd.read_excel("TABELA CZASY 160.92.02 CZASY NA PIANKOWANIE_nowy.xls")
+#df_org = pd.read_excel("czasy_wszystko_do_2025.06.30_piankowanie.xls")
+#df_cennik = pd.read_excel("TABELA CZASY 160.92.02 CZASY NA PIANKOWANIE_nowy.xls")
+
+if 'dane_bazowe' not in st.session_state:
+    st.session_state.bazowe_dane = funkcje_pomocnicze.zaladuj_dane(st.secrets["sciezki"]["sciezka_baza"])
+if 'dane_cennik' not in st.session_state:
+    st.session_state.dane_cennik = funkcje_pomocnicze.zaladuj_dane(st.secrets["sciezki"]["sciezka_cennik"])
+
+df_org = st.session_state.bazowe_dane
+df_cennik = st.session_state.dane_cennik
 
 ### WYBRANIE TAPICERÓW DO ANALIZY
 st.subheader("PODSTAWOWE INFORMACJE O ANALIZIE")
@@ -179,7 +187,6 @@ st.dataframe(pivot_mediana_jak_liczymy.style.format("{:.0f}").set_properties(**{
 
 ### TABELA Z MEDIANA EFEKTYWNOSCI
 st.subheader("METODA 1: Efektywność na podstawie logowanych czasów")
-st.write("### Mediana efektywności (%)")
 efektywnosc_zakres = st.slider(
     "Zakres mediany efektywności (%)",
     min_value=0,
@@ -193,6 +200,15 @@ df_filtrowany = df_filtrowany[
     (df_filtrowany['efektywnosc_przerwy']>=dolny_prog) &
     (df_filtrowany['efektywnosc_przerwy']<=gorny_prog)
 ]
+st.markdown(
+    "Obejmuje czasy spełniające następujące warunki:<br>"
+    f"1. Zakres dat: {df_group['minimum_start'].dt.date.min()} do {df_group['minimum_start'].dt.date.max()}<br>"
+    "2. Piankowanie nie obejmowało nietypwych foteli lub sof.<br>"
+    f"3. Efektywność piankowania mieści się w przedziale {int(dolny_prog*100)}(%) do {int(gorny_prog*100)}(%)",
+    unsafe_allow_html=True
+)
+st.write("### Mediana efektywności (%)")
+
 
 
 
@@ -249,6 +265,7 @@ df_group.to_excel('df_grouped.xlsx', index=False)
 
 
 ### PODGLAD EFEKTYWNOSCI TAPICEROWANIE
+st.subheader("METODA 2: Efektywność na podstawie róznicy między czasem rozpoczęcia a czasem zakończenia. Tylko dane od 2 lipca 2025")
 st.subheader("PIANKOWANIE POKAZANE NA PLANIE DNIA")
 piankarze = df_group['nazwisko'].unique()
 wybrany_piankarz = st.selectbox("Wybierz piankarza", sorted(piankarze))
@@ -473,6 +490,6 @@ st.dataframe(tabela_obserwacji.style.apply(styluj_obserwacje, axis=None))
 
 ### METODA 3
 st.subheader("Analiza na podstawie pliku 110.101.120 WYDAJNOSC PRACOWNIKOW")
-st.write("Do analizy wziąłem dane od 1 maja 2024 roku do 8 lipca 2025 roku")
-analizy.metoda3_plik_wydajnosc("valery_cennik.xlsx", "valery_czas_pracy.xlsx", "P06: Valery")
-analizy.metoda3_plik_wydajnosc("wojtek_cennik.xlsx", "wojtek_czas_pracy.xlsx", "P02: Wojtek")
+st.write("Zakres dat: 1 maja 2024 roku do 8 lipca 2025 roku")
+analizy.metoda3_plik_wydajnosc(st.secrets(["sciezki"]["p06_cennik"]), st.secrets(["sciezki"]["p06_czas_pracy"]))
+analizy.metoda3_plik_wydajnosc(st.secrets(["sciezki"]["p02_cennik"]), st.secrets(["sciezki"]["p02_czas_pracy"]))

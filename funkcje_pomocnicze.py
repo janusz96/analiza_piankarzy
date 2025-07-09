@@ -394,3 +394,12 @@ def sprawdz_haslo():
         st.text_input("Wpisz hasło:", type="password", on_change=password_entered, key="password")
         st.error("Niepoprawne hasło, spróbuj ponownie.")
         st.stop()   # Zatrzymaj dalsze działanie
+
+def zaladuj_dane(file_id):
+    gdrive_url = f"https://drive.google.com/uc?export=download&id={file_id}"
+    try:
+        df = pd.read_excel(gdrive_url)
+        return df
+    except FileNotFoundError:
+        st.error(f"Nie znaleziono pliku")
+        return None

@@ -2,6 +2,7 @@ import pandas as pd
 import streamlit as st
 import statsmodels.api as sm
 import ustawienia
+import funkcje_pomocnicze
 
 def metoda3_plik_wydajnosc(sciezka_cennik, sciezka_czas_pracy, imie):
     """
@@ -18,8 +19,8 @@ def metoda3_plik_wydajnosc(sciezka_cennik, sciezka_czas_pracy, imie):
     """
     st.write(f"Analiza dotycząca: {imie}")
     try:
-        df_cennik = pd.read_excel(sciezka_cennik)
-        df_czas_pracy = pd.read_excel(sciezka_czas_pracy)
+        df_cennik = funkcje_pomocnicze.zaladuj_dane(sciezka_czas_pracy)
+        df_czas_pracy = funkcje_pomocnicze.zaladuj_dane(sciezka_cennik)
     except FileNotFoundError as e:
         st.error(f"Nie znaleziono pliku: {e.filename}")
         return
