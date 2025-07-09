@@ -19,8 +19,8 @@ def metoda3_plik_wydajnosc(sciezka_cennik, sciezka_czas_pracy, imie):
     """
     st.write(f"Analiza dotycząca: {imie}")
     try:
-        df_cennik = funkcje_pomocnicze.zaladuj_dane(sciezka_czas_pracy)
-        df_czas_pracy = funkcje_pomocnicze.zaladuj_dane(sciezka_cennik)
+        df_cennik = funkcje_pomocnicze.zaladuj_dane(sciezka_cennik)
+        df_czas_pracy = funkcje_pomocnicze.zaladuj_dane(sciezka_czas_pracy)
     except FileNotFoundError as e:
         st.error(f"Nie znaleziono pliku: {e.filename}")
         return
@@ -30,7 +30,6 @@ def metoda3_plik_wydajnosc(sciezka_cennik, sciezka_czas_pracy, imie):
     except Exception as e:
         st.error(f"Wystąpił błąd przy wczytywaniu danych: {e}")
         return
-    st.write(df_cennik)
     df_cennik['model'] = df_cennik['model'].replace(ustawienia.model_skrot_mapping)
     df_pivot = df_cennik.pivot_table(index='dzien', columns='model', values='cennik', aggfunc='sum', fill_value=0)
 
