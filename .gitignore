@@ -1,7 +1,9 @@
 secrets.toml
-.xlsx
-.xls
+*.xlsx
+*.xls
+*.xlsm
 venv3/
 __pycache__/
 venv
 .venv
+stare_wersje_kodu.py
