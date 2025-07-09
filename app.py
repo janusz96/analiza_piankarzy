@@ -285,7 +285,18 @@ df_kalendarz = df_group[
     (df_group['iso_rok'] == wybrany_rok) &
     (df_group['iso_tydzien'] == wybrany_tydzien)
 ].copy()
-df_kalendarz['dzien_tygodnia'] = df_kalendarz['maximum_stop'].dt.day_name(locale='pl_PL')  # np. "poniedziałek"
+df_kalendarz['dzien_tygodnia'] = df_kalendarz['maximum_stop'].dt.day_name
+dni_map = {
+    'Monday': 'poniedziałek',
+    'Tuesday': 'wtorek',
+    'Wednesday': 'środa',
+    'Thursday': 'czwartek',
+    'Friday': 'piątek',
+    'Saturday': 'sobota',
+    'Sunday': 'niedziela'
+}
+
+df_kalendarz['dzien_tygodnia'] = df_kalendarz['dzien_tygodnia'].map(dni_map)
 df_kalendarz['start'] = df_kalendarz['minimum_start']
 df_kalendarz['stop'] = df_kalendarz['maximum_stop']
 df_kalendarz['czas'] = (df_kalendarz['stop'] - df_kalendarz['start']).dt.total_seconds() / 60
