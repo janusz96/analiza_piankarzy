@@ -1,1 +1,7 @@
 secrets.toml
+.xlsx
+.xls
+venv3/
+__pycache__/
+venv
+.venv
