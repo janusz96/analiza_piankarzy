@@ -32,8 +32,8 @@ df_cennik = st.session_state.dane_cennik
 
 ### WYBRANIE TAPICERÓW DO ANALIZY
 st.subheader("PODSTAWOWE INFORMACJE O ANALIZIE")
-df_org = df_org[df_org['Nazwisko'].isin(ustawienia.analizowani_piankarze)]
-st.write("Piankarze ujęci w analizie to: ", ustawienia.imiona_piankarzy)
+#df_org = df_org[df_org['Nazwisko'].isin(ustawienia.analizowani_piankarze)]
+#st.write("Piankarze ujęci w analizie to: ", ustawienia.imiona_piankarzy)
 
 ### ZAKRES DAT
 st.write("Zakres dat analizy to ", df_org['Start'].dt.date.min()," do ", df_org['Stop'].dt.date.max())
