@@ -24,13 +24,13 @@ start = time.perf_counter()
 #df_org = pd.read_excel("czasy_wszystko_do_2025.06.30_piankowanie.xls")
 #df_cennik = pd.read_excel("TABELA CZASY 160.92.02 CZASY NA PIANKOWANIE_nowy.xls")
 
-if 'dane_bazowe' not in st.session_state:
+if 'bazowe_dane' not in st.session_state:
     st.session_state.bazowe_dane = funkcje_pomocnicze.zaladuj_dane(st.secrets["sciezki"]["sciezka_baza"])
 if 'dane_cennik' not in st.session_state:
     st.session_state.dane_cennik = funkcje_pomocnicze.zaladuj_dane(st.secrets["sciezki"]["sciezka_cennik"])
 
-df_org = st.session_state.bazowe_dane
-df_cennik = st.session_state.dane_cennik
+df_org = st.session_state.bazowe_dane.copy()
+df_cennik = st.session_state.dane_cennik.copy()
 
 stop = time.perf_counter()
 st.write(f"⏱️ Czas ładowania danych: {stop - start:.2f} s")
@@ -131,7 +131,7 @@ st.markdown(
 st.write(df_brak_cennika)
 
 ### ZAPISANIE PLIKU PRZED GRUPOWANIEM DANYCH
-df_org.to_excel('df_przed_zmianami.xlsx', index=False)
+#df_org.to_excel('df_przed_zmianami.xlsx', index=False)
 
 stop = time.perf_counter()
 st.write(f"⏱️ Zapisanie danych do excela: {stop - start:.2f} s")
@@ -277,7 +277,7 @@ st.write(styled_median)
 
 
 ### ZAPISANIE ZGRUPOWANYCH DANYCH DO EXCELA
-df_group.to_excel('df_grouped.xlsx', index=False)
+#df_group.to_excel('df_grouped.xlsx', index=False)
 
 
 
