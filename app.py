@@ -4,7 +4,7 @@ import numpy as np
 import funkcje_pomocnicze
 import ustawienia
 import datetime
-import re
+import time
 import plotly.express as px
 import plotly.graph_objects as go
 import statsmodels.api as sm
@@ -18,6 +18,8 @@ st.title("📊 Analiza czasu pracy piankarzy")
 ### WPISYWANIE HASŁA
 funkcje_pomocnicze.sprawdz_haslo()
 
+start = time.perf_counter()
+
 ### ŁADOWANIE DANYCH ŹRÓDŁOWYCH
 #df_org = pd.read_excel("czasy_wszystko_do_2025.06.30_piankowanie.xls")
 #df_cennik = pd.read_excel("TABELA CZASY 160.92.02 CZASY NA PIANKOWANIE_nowy.xls")
@@ -29,6 +31,10 @@ if 'dane_cennik' not in st.session_state:
 
 df_org = st.session_state.bazowe_dane
 df_cennik = st.session_state.dane_cennik
+
+stop = time.perf_counter()
+st.write(f"⏱️ Czas ładowania danych: {stop - start:.2f} s")
+start = time.perf_counter()
 
 ### WYBRANIE TAPICERÓW DO ANALIZY
 st.subheader("PODSTAWOWE INFORMACJE O ANALIZIE")
@@ -44,6 +50,10 @@ df_org.drop(columns=kolumny_do_usuniecia, inplace=True)
 
 ### SORTOWANIE 
 df_org.sort_values(by=["Nazwisko", "Start"], ascending=[True, True], inplace=True)
+
+stop = time.perf_counter()
+st.write(f"⏱️ Czas usunieca kolumn i sortowania danych: {stop - start:.2f} s")
+start = time.perf_counter()
 
 ### DODANIE INFORMACJI O TYM KIEDY UKOŃCZONO PIANKOWANIE
 df_org["kiedy_ukonczono"] = df_org["Czas"].apply(lambda x: "mniej niż 3 minuty" if x < 3 else "inne")
@@ -102,6 +112,10 @@ df_org["czas_cennik"] = df_org["model_bryla"].map(mapa_czasu).fillna(0)
 df_org.loc[df_org['model_bryla'] == 'poduszka', 'czas_cennik'] = 1
 df_filtr = df_org[df_org["czas_cennik"] == 0].copy()
 
+stop = time.perf_counter()
+st.write(f"⏱️ Czas laczenia z cennikiem i pozostalego obrabiania danych: {stop - start:.2f} s")
+start = time.perf_counter()
+
 #### POKAZUJEMY WARTOSCI DO KTORYCH BRAK WARTOSCI W CENNIKU
 df_brak_cennika = df_filtr.groupby(['Artykul nazwa', 'model_bryla']).size().reset_index(name='Liczba wystąpień')
 df_brak_cennika = df_brak_cennika.sort_values(by=['Artykul nazwa', 'model_bryla'])
@@ -118,6 +132,9 @@ st.write(df_brak_cennika)
 
 ### ZAPISANIE PLIKU PRZED GRUPOWANIEM DANYCH
 df_org.to_excel('df_przed_zmianami.xlsx', index=False)
+
+stop = time.perf_counter()
+st.write(f"⏱️ Zapisanie danych do excela: {stop - start:.2f} s")
 
 ### LACZYMY DANE W KOMISJE
 if 'dane_z_id_komisji' not in st.session_state:
