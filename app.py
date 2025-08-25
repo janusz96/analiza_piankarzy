@@ -52,7 +52,7 @@ df_org.drop(columns=kolumny_do_usuniecia, inplace=True)
 df_org.sort_values(by=["Nazwisko", "Start"], ascending=[True, True], inplace=True)
 
 stop = time.perf_counter()
-st.write(f"⏱️ Czas usunieca kolumn i sortowania danych: {stop - start:.2f} s")
+st.write(f"⏱️ Czas usuniecia kolumn i sortowania danych: {stop - start:.2f} s")
 start = time.perf_counter()
 
 ### DODANIE INFORMACJI O TYM KIEDY UKOŃCZONO PIANKOWANIE
@@ -364,6 +364,11 @@ kolory_map = {
     'różnica pomiędzy komisjami': 'rgba(0, 0, 0, 1.0)'                         # czarny
 }
 
+mask_inf = np.isinf(df['efektywnosc_przerwy'])
+df_inf = df[mask_inf]
+
+print("Wiersze z efektywnosc_przerwy = inf:")
+print(df_inf)
 
 # Tworzenie wykresu
 fig = go.Figure()
