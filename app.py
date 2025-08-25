@@ -277,7 +277,7 @@ st.write(styled_median)
 
 
 ### ZAPISANIE ZGRUPOWANYCH DANYCH DO EXCELA
-#df_group.to_excel('df_grouped.xlsx', index=False)
+df_group.to_excel('df_grouped.xlsx', index=False)
 
 
 
@@ -364,11 +364,7 @@ kolory_map = {
     'różnica pomiędzy komisjami': 'rgba(0, 0, 0, 1.0)'                         # czarny
 }
 
-mask_inf = np.isinf(df['efektywnosc_przerwy'])
-df_inf = df[mask_inf]
 
-print("Wiersze z efektywnosc_przerwy = inf:")
-print(df_inf)
 
 # Tworzenie wykresu
 fig = go.Figure()
